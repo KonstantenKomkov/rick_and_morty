@@ -128,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildRow(BuildContext context, Person person) {
+    print(person.avatar);
     return Card(
       margin: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       color: person.status == 'Dead' ? Colors.black54 : Colors.white24,

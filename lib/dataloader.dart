@@ -20,7 +20,7 @@ Future<List<Person>> loadPersons() async {
     person.id = jsonPerson["id"];
     person.name = jsonPerson["name"];
     person.status = jsonPerson["status"];
-    person.avatar = jsonPerson["status"];
+    person.avatar = jsonPerson["image"];
     results.add(person);
   }
 

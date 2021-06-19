@@ -33,18 +33,46 @@ class _State extends State<LocationDetailsPage> {
   @override
   Widget build(BuildContext context) {
     var widget;
-    final person = this.location;
-    if (person == null)
+    final location = this.location;
+    if (location == null)
       widget = Center(
         child: Text(
           "Please, wait...",
         ),
       );
     else
-      widget = Container();
+      widget = Container(
+        color: Colors.purple[400],
+        child: Row(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Type: ${location.type}",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Type: ${location.dimension}",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
 
     return Scaffold(
-      appBar: _buildAppBar(person != null ? person.name : ''),
+      appBar: _buildAppBar(location != null ? location.name : ''),
       body: widget,
     );
   }
