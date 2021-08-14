@@ -17,13 +17,13 @@ Future<LocationDetails> loadLocation(String url) async {
 
   var item = convert.jsonDecode(response.body);
   location = LocationDetails();
-  location.id = item["id"];
-  location.name = item["name"];
-  location.type = item["type"];
-  location.dimension = item["dimension"];
-  location.url = item["url"];
-  location.created = item["created"];
-  for (String url in item["residents"]) {
+  location.id = item["id"] as int;
+  location.name = item["name"] as String;
+  location.type = item["type"] as String;
+  location.dimension = item["dimension"] as String;
+  location.url = item["url"] as String;
+  location.created = item["created"] as String;
+  for (final String url in item["residents"]) {
     location.residents.add(url);
   }
   return location;

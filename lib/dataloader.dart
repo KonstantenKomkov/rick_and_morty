@@ -1,5 +1,5 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class Person {
   int id = 0;
@@ -9,18 +9,18 @@ class Person {
 }
 
 Future<List<Person>> loadPersons() async {
-  var response =
+  final response =
       await http.get(Uri.parse("https://rickandmortyapi.com/api/character"));
-  var json = convert.jsonDecode(response.body);
-  List<dynamic> jsonPersons = json["results"];
-  List<Person> results = [];
+  final json = convert.jsonDecode(response.body);
+  List<dynamic> jsonPersons = json["results"] as List<dynamic>;
+  final List<Person> results = [];
 
-  for (var jsonPerson in jsonPersons) {
-    Person person = Person();
-    person.id = jsonPerson["id"];
-    person.name = jsonPerson["name"];
-    person.status = jsonPerson["status"];
-    person.avatar = jsonPerson["image"];
+  for (final jsonPerson in jsonPersons) {
+    final Person person = Person();
+    person.id = jsonPerson["id"] as int;
+    person.name = jsonPerson["name"] as String;
+    person.status = jsonPerson["status"] as String;
+    person.avatar = jsonPerson["image"] as String;
     results.add(person);
   }
 

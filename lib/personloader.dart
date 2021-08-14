@@ -18,24 +18,24 @@ class PersonDetails {
 }
 
 Future<PersonDetails> loadPerson(int id) async {
-  var response = await http
+  final response = await http
       .get(Uri.parse("https://rickandmortyapi.com/api/character/$id"));
   PersonDetails person;
 
   var item = convert.jsonDecode(response.body);
   person = PersonDetails();
-  person.id = item["id"];
-  person.name = item["name"];
-  person.avatar = item["image"];
-  person.locationName = item["location"]["name"];
-  person.locationUrl = item["location"]["url"];
-  person.status = item["status"];
-  person.species = item["species"];
-  person.created = item["created"];
-  person.gender = item["gender"];
-  person.type = item["type"];
-  person.originName = item["origin"]["name"];
-  person.originUrl = item["origin"]["url"];
+  person.id = item["id"] as int;
+  person.name = item["name"] as String;
+  person.avatar = item["image"] as String;
+  person.locationName = item["location"]["name"] as String;
+  person.locationUrl = item["location"]["url"] as String;
+  person.status = item["status"] as String;
+  person.species = item["species"] as String;
+  person.created = item["created"] as String;
+  person.gender = item["gender"] as String;
+  person.type = item["type"] as String;
+  person.originName = item["origin"]["name"] as String;
+  person.originUrl = item["origin"]["url"] as String;
   //person.episodes = item["episode"].toList();
 
   // for (String episode in item["episode"]) {

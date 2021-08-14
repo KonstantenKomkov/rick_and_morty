@@ -3,19 +3,18 @@ import 'package:flutter_first_app/personloader.dart';
 import 'package:flutter_first_app/locationwidget.dart';
 
 class PersonDetailsPage extends StatefulWidget {
-  PersonDetailsPage({required this.id}) : super();
+  const PersonDetailsPage({required this.id}) : super();
 
   final int id;
 
   @override
-  _State createState() => _State(id: id);
+  _PersonDetailsPageState createState() => _PersonDetailsPageState(id: id);
 }
 
-class _State extends State<PersonDetailsPage> {
-  _State({required this.id}) : super();
+class _PersonDetailsPageState extends State<PersonDetailsPage> {
+  _PersonDetailsPageState({required this.id}) : super();
 
   int id;
-  // null-safety, don't use = null
   PersonDetails? person;
 
   @override
@@ -24,8 +23,8 @@ class _State extends State<PersonDetailsPage> {
     loadData();
   }
 
-  void loadData() async {
-    var personInfo = await loadPerson(id);
+  Future<void> loadData() async {
+    final personInfo = await loadPerson(id);
     setState(() {
       person = personInfo;
     });
@@ -33,15 +32,15 @@ class _State extends State<PersonDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var widget;
+    Widget widget;
     final person = this.person;
-    if (person == null)
-      widget = Center(
+    if (person == null) {
+      widget = const Center(
         child: Text(
           "Please, wait...",
         ),
       );
-    else
+    } else {
       widget = Container(
         color:
             person.status == 'Dead' ? Colors.purple[800] : Colors.purple[200],
@@ -52,7 +51,6 @@ class _State extends State<PersonDetailsPage> {
                 padding: const EdgeInsets.only(top: 30),
                 child: Image.network(
                   person.avatar,
-                  //width: double.infinity,
                 ),
               ),
               Padding(
@@ -123,7 +121,7 @@ class _State extends State<PersonDetailsPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Row(
@@ -184,7 +182,7 @@ class _State extends State<PersonDetailsPage> {
           ),
         ),
       );
-
+    }
     return Scaffold(
       appBar: _buildAppBar(person != null ? person.name : ''),
       body: widget,
@@ -195,7 +193,7 @@ class _State extends State<PersonDetailsPage> {
     return AppBar(
       title: Text(
         "R&M: $name",
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black87,
           fontSize: 28,
         ),
