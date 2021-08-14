@@ -12,10 +12,10 @@ class LocationDetails {
 }
 
 Future<LocationDetails> loadLocation(String url) async {
-  var response = await http.get(Uri.parse(url));
+  final response = await http.get(Uri.parse(url));
   LocationDetails location;
 
-  var item = convert.jsonDecode(response.body);
+  final item = convert.jsonDecode(response.body);
   location = LocationDetails();
   location.id = item["id"] as int;
   location.name = item["name"] as String;

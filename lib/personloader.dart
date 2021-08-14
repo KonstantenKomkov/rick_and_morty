@@ -22,7 +22,7 @@ Future<PersonDetails> loadPerson(int id) async {
       .get(Uri.parse("https://rickandmortyapi.com/api/character/$id"));
   PersonDetails person;
 
-  var item = convert.jsonDecode(response.body);
+  final item = convert.jsonDecode(response.body);
   person = PersonDetails();
   person.id = item["id"] as int;
   person.name = item["name"] as String;

@@ -15,16 +15,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.yellow,
       ),
-      home: MyHomePage(
-        title: 'Skillbox intencive Page',
+      home: const MyHomePage(
+        title: 'Rick and Morty',
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -32,24 +31,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Зачем присваивать null? У нас уже null-safety.
-  // Don't explicitly initialize variables to null - VS code
   List<Person>? persons;
   Object? error;
 
-  void loadData() async {
+  Future<void> loadData() async {
     try {
-      var personsLoad = await loadPersons();
+      final personsLoad = await loadPersons();
       setState(() {
         persons = personsLoad;
       });
     } catch (exception) {
       setState(() {
         error = exception;
-        print("Oops, we catch warning");
       });
     }
-    print("End of loading");
   }
 
   @override
@@ -63,12 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget content;
     final List<Person>? currentPersons = persons;
     final Object? exception = error;
-    if (currentPersons != null)
+    if (currentPersons != null) {
       content = personsList(context, currentPersons);
-    else if (exception != null)
+    } else if (exception != null) {
       content = exceptionStub(context, exception);
-    else
+    } else {
       content = loader(context);
+    }
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildBody(content),
@@ -77,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: Text(
+      title: const Text(
         "R&M: Characters",
         style: TextStyle(
           color: Colors.black87,
@@ -90,12 +86,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody(Widget content) {
     return Container(
       color: Colors.purple[800],
-      child: Expanded(
-        child: Padding(
-          padding: EdgeInsets.only(top: 7),
-          child: Center(
-            child: content,
-          ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 7),
+        child: Center(
+          child: content,
         ),
       ),
     );
@@ -128,14 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildRow(BuildContext context, Person person) {
-    print(person.avatar);
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+      margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       color: person.status == 'Dead' ? Colors.black54 : Colors.white24,
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: CircleAvatar(
               backgroundImage: NetworkImage(person.avatar),
             ),

@@ -12,7 +12,7 @@ Future<List<Person>> loadPersons() async {
   final response =
       await http.get(Uri.parse("https://rickandmortyapi.com/api/character"));
   final json = convert.jsonDecode(response.body);
-  List<dynamic> jsonPersons = json["results"] as List<dynamic>;
+  final List<dynamic> jsonPersons = json["results"] as List<dynamic>;
   final List<Person> results = [];
 
   for (final jsonPerson in jsonPersons) {

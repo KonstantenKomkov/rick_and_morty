@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_first_app/locationloader.dart';
 
 class LocationDetailsPage extends StatefulWidget {
-  const LocationDetailsPage({required this.url}) : super();
-
+  const LocationDetailsPage({Key? key, required this.url}) : super(key: key);
   final String url;
 
   @override
-  _State createState() => _State(url: url);
+  _LocationDetailsPageState createState() => _LocationDetailsPageState();
 }
 
-class _State extends State<LocationDetailsPage> {
-  _State({required this.url}) : super();
-
-  String url;
+class _LocationDetailsPageState extends State<LocationDetailsPage> {
   LocationDetails? location;
 
   @override
@@ -22,8 +18,8 @@ class _State extends State<LocationDetailsPage> {
     loadData();
   }
 
-  void loadData() async {
-    final locationInfo = await loadLocation(url);
+  Future<void> loadData() async {
+    final locationInfo = await loadLocation(widget.url);
     setState(() {
       location = locationInfo;
     });
@@ -50,7 +46,7 @@ class _State extends State<LocationDetailsPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "Type: ${location.type}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),

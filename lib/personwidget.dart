@@ -3,18 +3,14 @@ import 'package:flutter_first_app/personloader.dart';
 import 'package:flutter_first_app/locationwidget.dart';
 
 class PersonDetailsPage extends StatefulWidget {
-  const PersonDetailsPage({required this.id}) : super();
-
+  const PersonDetailsPage({Key? key, required this.id}) : super(key: key);
   final int id;
 
   @override
-  _PersonDetailsPageState createState() => _PersonDetailsPageState(id: id);
+  _PersonDetailsPageState createState() => _PersonDetailsPageState();
 }
 
 class _PersonDetailsPageState extends State<PersonDetailsPage> {
-  _PersonDetailsPageState({required this.id}) : super();
-
-  int id;
   PersonDetails? person;
 
   @override
@@ -24,7 +20,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
   }
 
   Future<void> loadData() async {
-    final personInfo = await loadPerson(id);
+    final personInfo = await loadPerson(widget.id);
     setState(() {
       person = personInfo;
     });
@@ -54,7 +50,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -101,7 +97,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Row(
