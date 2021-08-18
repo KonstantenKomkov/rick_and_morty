@@ -1,28 +1,30 @@
-import 'dart:convert' as convert;
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:rick_and_morty/models/classes.dart';
 
-class Person {
-  int id = 0;
-  String name = "";
-  String status = "";
-  String avatar = "";
+Future<ApiResponse> loadData(String path) async {
+  try {
+    final uri = Uri.http('rickandmortyapi.com', path);
+    final http.Response response = await http.get(uri);
+    final ApiResponse result =
+        ApiResponse.fromJson(response.body as Map<String, dynamic>);
+    //print(response.body);
+    return result;
+  } catch (e) {
+    throw Exception(e.toString());
+  }
 }
 
-Future<List<Person>> loadPersons() async {
-  final response =
-      await http.get(Uri.parse("https://rickandmortyapi.com/api/character"));
-  final json = convert.jsonDecode(response.body);
-  final List<dynamic> jsonPersons = json["results"] as List<dynamic>;
-  final List<Person> results = [];
+Future<List<Person>?> getPersons(String path) async {
+  final ApiResponse api = await loadData(path);
 
-  for (final jsonPerson in jsonPersons) {
-    final Person person = Person();
-    person.id = jsonPerson["id"] as int;
-    person.name = jsonPerson["name"] as String;
-    person.status = jsonPerson["status"] as String;
-    person.avatar = jsonPerson["image"] as String;
-    results.add(person);
-  }
-
-  return results;
+  // if (api.results == null) {
+  //   return [];
+  // } else {
+  print(api.results);
+  final List<Person> persons = api.results!
+      .map((e) => Person.fromJson(e as Map<String, dynamic>))
+      .toList();
+  return persons;
+  //}
 }

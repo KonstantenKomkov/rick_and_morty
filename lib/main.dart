@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_first_app/dataloader.dart';
-import 'package:flutter_first_app/personwidget.dart';
+import 'package:rick_and_morty/dataloader.dart';
+import 'package:rick_and_morty/personwidget.dart';
+import 'package:rick_and_morty/models/classes.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> loadData() async {
     try {
-      final personsLoad = await loadPersons();
+      final personsLoad = await getPersons('api/character');
       setState(() {
         persons = personsLoad;
       });

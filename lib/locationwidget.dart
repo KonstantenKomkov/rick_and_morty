@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_app/locationloader.dart';
+import 'package:rick_and_morty/locationloader.dart';
 
 class LocationDetailsPage extends StatefulWidget {
   const LocationDetailsPage({Key? key, required this.url}) : super(key: key);

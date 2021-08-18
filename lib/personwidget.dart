@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_app/personloader.dart';
-import 'package:flutter_first_app/locationwidget.dart';
+import 'package:rick_and_morty/personloader.dart';
+import 'package:rick_and_morty/locationwidget.dart';
 
 class PersonDetailsPage extends StatefulWidget {
   const PersonDetailsPage({Key? key, required this.id}) : super(key: key);
