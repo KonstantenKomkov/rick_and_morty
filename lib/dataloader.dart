@@ -9,23 +9,12 @@ Future<List<Person>?> getData(String path) async {
     final decodedData = jsonDecode(response.body);
     final ApiResponse api =
         ApiResponse.fromJson(decodedData as Map<String, dynamic>);
-    print(api.results);
-    return api.results!.cast<Person>();
+    if (api.results == null) {
+      return [];
+    } else {
+      return api.results!.cast<Person>();
+    }
   } catch (e) {
     throw Exception(e.toString());
   }
 }
-
-// Future<List<Person>?> getPersons(String path) async {
-//   final ApiResponse api = await loadData(path);
-
-//   if (api.results == null) {
-//     return [];
-//   } else {
-//     print(api.results);
-//     // final List<Person> persons = api.results!
-//     //     .map((e) => Person.fromJson(e as Map<String, dynamic>))
-//     //     .toList();
-//     return [];
-//   }
-// }
