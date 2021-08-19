@@ -37,9 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> loadData() async {
     try {
-      final personsLoad = await getPersons('api/character');
+      final personsLoad = await getData('api/character');
       setState(() {
-        persons = personsLoad;
+        persons = personsLoad as List<Person>?;
       });
     } catch (exception) {
       setState(() {
