@@ -1,28 +1,45 @@
+import 'dart:convert' as convert;
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/locationloader.dart';
+import 'package:http/http.dart' as http;
+import 'package:rick_and_morty/models/location.dart';
 
 class LocationDetailsPage extends StatefulWidget {
-  const LocationDetailsPage({Key? key, required this.url}) : super(key: key);
+  static const String routeName = '/location_details';
   final String url;
+  const LocationDetailsPage({
+    Key? key,
+    required this.url,
+  }) : super(
+          key: key,
+        );
 
   @override
   _LocationDetailsPageState createState() => _LocationDetailsPageState();
 }
 
 class _LocationDetailsPageState extends State<LocationDetailsPage> {
-  LocationDetails? location;
+  Location? location;
 
   @override
   void initState() {
     super.initState();
     loadData();
+    setState(() {});
   }
 
   Future<void> loadData() async {
-    final locationInfo = await loadLocation(widget.url);
-    setState(() {
-      location = locationInfo;
-    });
+    location = await loadLocation(
+      url: widget.url,
+    );
+  }
+
+  Future<Location> loadLocation({required String url}) async {
+    final http.Response response = await http.get(Uri.parse(url));
+    final Map<String, dynamic> jsonResponse =
+        convert.jsonDecode(response.body) as Map<String, dynamic>;
+    return Location.fromJson(jsonResponse);
   }
 
   @override
@@ -47,7 +64,7 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                   child: Text(
                     "Type: ${location.type}",
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.0,
                     ),
                   ),
                 ),
@@ -56,7 +73,7 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
                   child: Text(
                     "Type: ${location.dimension}",
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.0,
                     ),
                   ),
                 ),
@@ -67,18 +84,24 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
       );
     }
     return Scaffold(
-      appBar: _buildAppBar(location != null ? location.name : ''),
+      appBar: _buildAppBar(
+        context,
+        title: location?.name ?? "",
+      ),
       body: widget,
     );
   }
 
-  PreferredSizeWidget _buildAppBar(String name) {
+  PreferredSizeWidget _buildAppBar(
+    BuildContext context, {
+    required String title,
+  }) {
     return AppBar(
       title: Text(
-        "R&M: $name",
+        "R&M: $title",
         style: const TextStyle(
           color: Colors.black87,
-          fontSize: 28,
+          fontSize: 28.0,
         ),
       ),
     );
