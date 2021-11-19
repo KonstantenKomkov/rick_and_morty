@@ -13,7 +13,9 @@ class PersonDetailsPage extends StatefulWidget {
     Key? key,
     required this.id,
     this.title,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+        );
 
   @override
   _PersonDetailsPageState createState() => _PersonDetailsPageState();
@@ -51,145 +53,74 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
       appBar: _buildAppBar(
         person?.name ?? "",
       ),
-      body: person == null
-          ? const Center(
-              child: Text(
-                "Please, wait...",
-              ),
-            )
-          : Container(
-              color: person!.status == 'Dead'
-                  ? Colors.purple[800]
-                  : Colors.purple[200],
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 30.0,
-                      ),
-                      child: Image.network(
-                        person!.image,
-                      ),
+      body: _buildBody(context, person),
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    Person? person,
+  ) {
+    return person == null
+        ? const Center(
+            child: Text(
+              "Please, wait...",
+            ),
+          )
+        : Container(
+            color: person.status == 'Dead'
+                ? Colors.purple[800]
+                : Colors.purple[200],
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 30.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Characteristics',
-                          style: TextStyle(
-                            fontSize: 26.0,
-                            color: person!.status == 'Dead'
-                                ? Colors.white70
-                                : Colors.black,
-                          ),
+                    child: Image.network(
+                      person.image,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Characteristics',
+                        style: TextStyle(
+                          fontSize: 26.0,
+                          color: person.status == 'Dead'
+                              ? Colors.white70
+                              : Colors.black,
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 16.0,
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              'Status: ${person!.status == 'Dead' ? person!.status : "still ${person!.status}"}',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: person!.status == 'Dead'
-                                    ? Colors.white70
-                                    : Colors.black,
-                              ),
-                            ),
-                            Text(
-                              'Species: ${person!.species}',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: person!.status == 'Dead'
-                                    ? Colors.white70
-                                    : Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 16.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              'Created: ${person!.created}',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: person!.status == 'Dead'
-                                    ? Colors.white70
-                                    : Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              'Sex: ${person!.gender}',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: person!.status == 'Dead'
-                                    ? Colors.white70
-                                    : Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LocationDetailsPage(
-                              url: person!.location.url,
-                            ),
-                          ),
-                        )
-                      },
-                      child: Column(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            'Origin location:',
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
+                            'Status: ${person.status == 'Dead' ? person.status : "still ${person.status}"}',
                             style: TextStyle(
                               fontSize: 16.0,
-                              color: person!.status == 'Dead'
+                              color: person.status == 'Dead'
                                   ? Colors.white70
                                   : Colors.black,
                             ),
                           ),
                           Text(
-                            person!.location.name,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
+                            'Species: ${person.species}',
                             style: TextStyle(
                               fontSize: 16.0,
-                              color: person!.status == 'Dead'
+                              color: person.status == 'Dead'
                                   ? Colors.white70
                                   : Colors.black,
                             ),
@@ -197,11 +128,89 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'Created: ${person.created}',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: person.status == 'Dead'
+                                  ? Colors.white70
+                                  : Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'Sex: ${person.gender}',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: person.status == 'Dead'
+                                  ? Colors.white70
+                                  : Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LocationDetailsPage(
+                            url: person.location.url,
+                          ),
+                        ),
+                      )
+                    },
+                    child: Column(
+                      children: [
+                        Text(
+                          'Origin location:',
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: person.status == 'Dead'
+                                ? Colors.white70
+                                : Colors.black,
+                          ),
+                        ),
+                        Text(
+                          person.location.name,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: person.status == 'Dead'
+                                ? Colors.white70
+                                : Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-    );
+          );
   }
 
   PreferredSizeWidget _buildAppBar(String name) {
