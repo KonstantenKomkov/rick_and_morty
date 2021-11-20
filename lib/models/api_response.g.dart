@@ -7,7 +7,9 @@ part of 'api_response.dart';
 // **************************************************************************
 
 ApiResponse _$ApiResponseFromJson(Map<String, dynamic> json) => ApiResponse(
-      info: Info.fromJson(json['info'] as Map<String, dynamic>),
+      info: json['info'] == null
+          ? null
+          : Info.fromJson(json['info'] as Map<String, dynamic>),
       results: json['results'] as List<dynamic>?,
     );
 

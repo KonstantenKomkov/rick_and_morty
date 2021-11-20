@@ -5,12 +5,22 @@ part 'api_response.g.dart';
 
 @JsonSerializable()
 class ApiResponse {
-  final Info info;
+  final Info? info;
   final List? results;
+  @JsonKey(
+    ignore: true,
+  )
+  final bool? isError;
+  @JsonKey(
+    ignore: true,
+  )
+  final String? error;
 
   ApiResponse({
-    required this.info,
+    this.info,
     this.results,
+    this.isError,
+    this.error,
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) =>

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/pages/not_found_page.dart';
-import 'package:rick_and_morty/pages/person_details_page.dart';
 import 'package:rick_and_morty/pages/person_list_page.dart';
 
 void main() {
@@ -13,9 +12,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Rick and Morty',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
       home: const PersonListPage(),
       initialRoute: '/',
       onUnknownRoute: (RouteSettings settings) {
