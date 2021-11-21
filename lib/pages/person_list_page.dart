@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/api_person.dart';
 import 'package:rick_and_morty/models/api_response.dart';
+import 'package:rick_and_morty/models/info.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/pages/view/person_list_item.dart';
 
@@ -21,8 +22,10 @@ class PersonListPage extends StatefulWidget {
 }
 
 class _PersonListPageState extends State<PersonListPage> {
-  List<Person>? persons;
+  List<Person> persons = [];
   bool isLoading = false;
+  bool loadNextPage = false;
+  Info? info;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -31,33 +34,45 @@ class _PersonListPageState extends State<PersonListPage> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print("Loading");
+        loadNextPage = true;
+        loadPersonsList();
+        loadNextPage = false;
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> loadPersonsList() async {
     setState(() {
       isLoading = true;
     });
-    ApiResponse response = await loadData();
+    final ApiResponse response = await loadData(
+      loadNextPage: loadNextPage,
+      info: info,
+    );
     setState(() {
       isLoading = false;
     });
     if (response.isError ?? false) {
-      persons = [];
+      persons += [];
       print('Show error message');
     } else {
+      info = response.info;
       if (response.results == null) {
-        persons = [];
+        persons += [];
       } else {
         try {
-          persons = response.results!
+          persons += response.results!
               .map((person) => Person.fromJson(person as Map<String, dynamic>))
               .toList();
         } catch (e) {
-          persons = [];
+          persons += [];
           print('Show error message');
         }
       }
@@ -71,6 +86,7 @@ class _PersonListPageState extends State<PersonListPage> {
       body: _buildBody(
         context,
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 
@@ -95,21 +111,21 @@ class _PersonListPageState extends State<PersonListPage> {
             child: CircularProgressIndicator(),
           )
         : Center(
-            child: persons != null
+            child: persons.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(
                       top: 8.0,
                     ),
                     child: ListView.builder(
-                      itemCount: persons!.length + 1,
+                      itemCount: persons.length + 1,
                       itemBuilder: (context, index) {
-                        if (index == persons!.length) {
+                        if (index == persons.length) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
                         } else {
                           return PersonListItem(
-                            person: persons![index],
+                            person: persons[index],
                           );
                         }
                       },
