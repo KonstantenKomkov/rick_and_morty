@@ -4,9 +4,9 @@ import 'package:rick_and_morty/models/info.dart';
 part 'api_response.g.dart';
 
 @JsonSerializable()
-class ApiResponse {
+abstract class ApiResponse<T> {
   final Info? info;
-  final List? results;
+  final T? results;
   @JsonKey(
     ignore: true,
   )

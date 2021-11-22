@@ -52,7 +52,7 @@ class _PersonListPageState extends State<PersonListPage> {
     setState(() {
       isLoading = true;
     });
-    final ApiResponse response = await loadData(
+    final ApiResponse response = await loadListData(
       loadNextPage: loadNextPage,
       info: info,
     );
@@ -68,8 +68,11 @@ class _PersonListPageState extends State<PersonListPage> {
         persons += [];
       } else {
         try {
+          //response.results.cast<List<Map<String, dynamic>>>();
           persons += response.results!
-              .map((person) => Person.fromJson(person as Map<String, dynamic>))
+              .cast<List<Map<String, dynamic>>>()
+              .map<List<Map<String, dynamic>>>(
+                  (person) => Person.fromJson(person as Map<String, dynamic>))
               .toList();
         } catch (e) {
           persons += [];
