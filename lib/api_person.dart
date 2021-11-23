@@ -16,7 +16,7 @@ Future<ApiResponse> loadListData({
     } catch (e) {
       return ApiResponse(
         isError: true,
-        error: "Error: $e",
+        error: e.toString(),
       );
     }
   } else {
@@ -31,11 +31,13 @@ Future<ApiResponse> loadListData({
     try {
       final Map<String, dynamic> decodedData =
           jsonDecode(jsonResponse.body) as Map<String, dynamic>;
-      return ApiResponse.fromJson(decodedData);
+      return ApiResponse.fromJson(
+        decodedData,
+      );
     } catch (e) {
       return ApiResponse(
         isError: true,
-        error: "Error: $e",
+        error: e.toString(),
       );
     }
   } else {

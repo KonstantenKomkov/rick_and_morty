@@ -1,7 +1,6 @@
-import 'dart:convert' as convert;
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:rick_and_morty/api_person.dart';
+import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/pages/location_details_page.dart';
 
@@ -22,29 +21,30 @@ class PersonDetailsPage extends StatefulWidget {
 }
 
 class _PersonDetailsPageState extends State<PersonDetailsPage> {
-  Person? person;
+  late final Person? person;
 
   @override
   void initState() {
     super.initState();
-    loadData();
+    loadPerson(id: widget.id);
     setState(() {});
   }
 
-  Future<void> loadData() async {
-    person = await loadPerson(
-      id: widget.id,
-    );
-  }
-
-  Future<Person> loadPerson({
+  Future<void> loadPerson({
     required int id,
   }) async {
-    final http.Response response = await http
-        .get(Uri.parse("https://rickandmortyapi.com/api/character/$id"));
-    final Map<String, dynamic> jsonResponse =
-        convert.jsonDecode(response.body) as Map<String, dynamic>;
-    return Person.fromJson(jsonResponse);
+    final ApiResponse response = await loadObjectData(id: id);
+    if (response.isError ?? false) {
+      person = null;
+      print("Error: ${response.error}");
+    } else {
+      try {
+        person = Person.fromJson(response.results as Map<String, dynamic>);
+      } catch (e) {
+        person = null;
+        print("Error: $e");
+      }
+    }
   }
 
   @override

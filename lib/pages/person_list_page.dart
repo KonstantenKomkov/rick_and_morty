@@ -38,6 +38,13 @@ class _PersonListPageState extends State<PersonListPage> {
         loadPersonsList();
         loadNextPage = false;
       }
+
+      // print(_scrollController.position.extentAfter);
+      // if (_scrollController.position.extentAfter < 1915) {
+      //   loadNextPage = true;
+      //   loadPersonsList();
+      //   loadNextPage = false;
+      // }
     });
     super.initState();
   }
@@ -61,22 +68,22 @@ class _PersonListPageState extends State<PersonListPage> {
     });
     if (response.isError ?? false) {
       persons += [];
-      print('Show error message');
+      print('Error: ${response.error}');
     } else {
       info = response.info;
       if (response.results == null) {
         persons += [];
       } else {
         try {
-          //response.results.cast<List<Map<String, dynamic>>>();
-          persons += response.results!
-              .cast<List<Map<String, dynamic>>>()
-              .map<List<Map<String, dynamic>>>(
-                  (person) => Person.fromJson(person as Map<String, dynamic>))
+          final List<dynamic> decodedData = response.results! as List<dynamic>;
+          persons += decodedData
+              .map(
+                (person) => Person.fromJson(person as Map<String, dynamic>),
+              )
               .toList();
         } catch (e) {
           persons += [];
-          print('Show error message');
+          print('Error: $e');
         }
       }
     }
@@ -135,7 +142,11 @@ class _PersonListPageState extends State<PersonListPage> {
                       controller: _scrollController,
                     ),
                   )
-                : Container(),
+                : const Center(
+                    child: Text(
+                      'No characters',
+                    ),
+                  ),
           );
   }
 }
