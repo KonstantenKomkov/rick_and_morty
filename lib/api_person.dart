@@ -53,8 +53,7 @@ Future<ApiResponse> loadObjectData({
 }) async {
   final Uri uri = Uri.http(
     'rickandmortyapi.com',
-    'api/character',
-    {"id": id},
+    'api/character/$id',
   );
 
   final Response jsonResponse = await get(uri);
