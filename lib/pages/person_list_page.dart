@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/api_person.dart';
@@ -38,13 +40,6 @@ class _PersonListPageState extends State<PersonListPage> {
         loadPersonsList();
         loadNextPage = false;
       }
-
-      // print(_scrollController.position.extentAfter);
-      // if (_scrollController.position.extentAfter < 1915) {
-      //   loadNextPage = true;
-      //   loadPersonsList();
-      //   loadNextPage = false;
-      // }
     });
     super.initState();
   }
@@ -127,15 +122,20 @@ class _PersonListPageState extends State<PersonListPage> {
                       top: 8.0,
                     ),
                     child: ListView.builder(
-                      itemCount: persons.length + 1,
+                      itemCount: persons.length + (isLoading ? 1 : 0),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        if (index == persons.length) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else {
+                        if (index < persons.length) {
                           return PersonListItem(
                             person: persons[index],
+                          );
+                        } else {
+                          Timer(const Duration(milliseconds: 30), () {
+                            _scrollController.jumpTo(
+                                _scrollController.position.maxScrollExtent);
+                          });
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
                         }
                       },
