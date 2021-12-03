@@ -32,12 +32,16 @@ class MyApp extends StatelessWidget {
             );
           case PersonDetailsPage.routeName:
             final args = settings.arguments as Map<String, dynamic>?;
-            if (args != null && args.containsKey("id")) {
+            if (args != null &&
+                args.containsKey("id") &&
+                args.containsKey("title")) {
               final int id = args["id"] as int;
+              final String title = args["title"] as String;
               return MaterialPageRoute(
                 builder: (BuildContext context) {
                   return PersonDetailsPage(
                     id: id,
+                    title: title,
                   );
                 },
               );

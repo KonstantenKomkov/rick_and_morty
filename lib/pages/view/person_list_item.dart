@@ -18,6 +18,7 @@ class PersonListItem extends StatelessWidget {
         '/person_details',
         arguments: {
           "id": person.id,
+          "title": person.name,
         },
       ),
       child: _buildPersonItem(context),
@@ -63,10 +64,10 @@ class PersonListItem extends StatelessWidget {
         vertical: 4.0,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildCardImage(context),
-          _buildCardInfo(context),
+          Flexible(child: _buildCardInfo(context)),
         ],
       ),
     );
@@ -87,22 +88,20 @@ class PersonListItem extends StatelessWidget {
   Widget _buildCardInfo(
     BuildContext context,
   ) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildPersonName(context),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 4.0,
-              ),
-              child: _buildStatusRow(context),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildPersonName(context),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 4.0,
             ),
-            ..._buildPersonLocation(context),
-          ],
-        ),
+            child: _buildStatusRow(context),
+          ),
+          ..._buildPersonLocation(context),
+        ],
       ),
     );
   }
@@ -137,10 +136,12 @@ class PersonListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(5.0),
           ),
         ),
-        Text(
-          "${person.species} - ${person.status}",
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        Flexible(
+          child: Text(
+            "${person.species} - ${person.status}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );
