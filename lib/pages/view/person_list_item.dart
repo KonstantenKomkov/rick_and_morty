@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/models/person.dart';
+import 'package:rick_and_morty/pages/view/person_status.dart';
 
 class PersonListItem extends StatelessWidget {
   final Person person;
@@ -23,19 +24,6 @@ class PersonListItem extends StatelessWidget {
       ),
       child: _buildPersonItem(context),
     );
-  }
-
-  Color getStatusColor({
-    required String status,
-  }) {
-    switch (status) {
-      case "Alive":
-        return Colors.green;
-      case "Dead":
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
   }
 
   Widget _buildPersonItem(
@@ -98,7 +86,10 @@ class PersonListItem extends StatelessWidget {
             padding: const EdgeInsets.only(
               bottom: 4.0,
             ),
-            child: _buildStatusRow(context),
+            child: PersonStatus(
+              status: person.status,
+              species: person.species,
+            ),
           ),
           ..._buildPersonLocation(context),
         ],
@@ -117,33 +108,6 @@ class PersonListItem extends StatelessWidget {
       style: const TextStyle(
         fontSize: 21.0,
       ),
-    );
-  }
-
-  Widget _buildStatusRow(
-    BuildContext context,
-  ) {
-    return Row(
-      children: [
-        Container(
-          width: 10.0,
-          height: 10.0,
-          margin: const EdgeInsets.all(4.0),
-          decoration: BoxDecoration(
-            color: getStatusColor(
-              status: person.status,
-            ),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        ),
-        Flexible(
-          child: Text(
-            "${person.species} - ${person.status}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
     );
   }
 
