@@ -169,7 +169,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
           _buildPersonRow(
             context,
             title: "Location: ",
-            value: person.location.name,
+            value: "\n${person.location.name}",
           ),
           // GestureDetector(
           //   onTap: () => {
@@ -288,26 +288,27 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
       ),
       child: Row(
         children: [
-          Text.rich(
-            softWrap: true,
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: title,
-                  style: const TextStyle(
-                    color: Colors.black38,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.0,
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: title,
+                    style: const TextStyle(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: value,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.0,
+                  TextSpan(
+                    text: value,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
