@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rick_and_morty/pages/location_details_page.dart';
 import 'package:rick_and_morty/pages/not_found_page.dart';
 import 'package:rick_and_morty/pages/person_details_page.dart';
 import 'package:rick_and_morty/pages/person_list_page.dart';
@@ -42,6 +43,27 @@ class MyApp extends StatelessWidget {
                   return PersonDetailsPage(
                     id: id,
                     title: title,
+                  );
+                },
+              );
+            }
+            return MaterialPageRoute(
+              builder: (BuildContext context) {
+                return const NotFoundPage();
+              },
+            );
+          case LocationDetailsPage.routeName:
+            final args = settings.arguments as Map<String, dynamic>?;
+            if (args != null &&
+                args.containsKey("title") &&
+                args.containsKey("url")) {
+              final String title = args["title"] as String;
+              final String url = args["url"] as String;
+              return MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return LocationDetailsPage(
+                    title: title,
+                    url: url,
                   );
                 },
               );
