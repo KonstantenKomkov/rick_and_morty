@@ -26,9 +26,7 @@ class PersonListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildPersonItem(
-    BuildContext context,
-  ) {
+  Widget _buildPersonItem(BuildContext context) {
     return Container(
       height: 116.0,
       decoration: const BoxDecoration(
@@ -61,9 +59,7 @@ class PersonListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildCardImage(
-    BuildContext context,
-  ) {
+  Widget _buildCardImage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CircleAvatar(
@@ -73,9 +69,7 @@ class PersonListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildCardInfo(
-    BuildContext context,
-  ) {
+  Widget _buildCardInfo(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -97,9 +91,7 @@ class PersonListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildPersonName(
-    BuildContext context,
-  ) {
+  Widget _buildPersonName(BuildContext context) {
     return Text(
       person.name,
       overflow: TextOverflow.ellipsis,
@@ -111,9 +103,7 @@ class PersonListItem extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildPersonLocation(
-    BuildContext context,
-  ) {
+  List<Widget> _buildPersonLocation(BuildContext context) {
     return [
       const Padding(
         padding: EdgeInsets.only(
