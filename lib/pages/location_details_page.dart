@@ -7,9 +7,11 @@ import 'package:rick_and_morty/models/location.dart';
 
 class LocationDetailsPage extends StatefulWidget {
   static const String routeName = '/location_details';
+  final String title;
   final String url;
   const LocationDetailsPage({
     Key? key,
+    required this.title,
     required this.url,
   }) : super(
           key: key,
@@ -35,7 +37,9 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
     );
   }
 
-  Future<Location> loadLocation({required String url}) async {
+  Future<Location> loadLocation({
+    required String url,
+  }) async {
     final http.Response response = await http.get(Uri.parse(url));
     final Map<String, dynamic> jsonResponse =
         convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -44,51 +48,12 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget;
-    final location = this.location;
-    if (location == null) {
-      widget = const Center(
-        child: Text(
-          "Please, wait...",
-        ),
-      );
-    } else {
-      widget = Container(
-        color: Colors.purple[400],
-        child: Row(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Type: ${location.type}",
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Type: ${location.dimension}",
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
     return Scaffold(
       appBar: _buildAppBar(
         context,
-        title: location?.name ?? "",
+        title: widget.title,
       ),
-      body: widget,
+      body: _buildBody(context),
     );
   }
 
@@ -98,12 +63,46 @@ class _LocationDetailsPageState extends State<LocationDetailsPage> {
   }) {
     return AppBar(
       title: Text(
-        "R&M: $title",
-        style: const TextStyle(
-          color: Colors.black87,
-          fontSize: 28.0,
-        ),
+        title,
       ),
     );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return location == null
+        ? const Center(
+            child: Text(
+              "Please, wait...",
+            ),
+          )
+        : Container(
+            color: Colors.purple[400],
+            child: Row(
+              children: [
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Type: ${location!.type}",
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Type: ${location!.dimension}",
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
   }
 }
