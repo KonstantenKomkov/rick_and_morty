@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/api_person.dart';
 import 'package:rick_and_morty/models/api_response.dart';
+import 'package:rick_and_morty/models/location.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/pages/location_details_page.dart';
 import 'package:rick_and_morty/pages/view/person_status.dart';
@@ -63,7 +64,10 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
       appBar: _buildAppBar(
         title: widget.title,
       ),
-      body: _buildBody(context, person),
+      body: _buildBody(
+        context,
+        person,
+      ),
     );
   }
 
@@ -101,113 +105,49 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
     BuildContext context, {
     required Person person,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Flex(
-            direction: Axis.vertical,
-            children: [
-              _buildPersonAvatar(
-                context,
-                image: person.image,
-              ),
-            ],
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Flexible(
-          //       child: _buildPersonAvatar(
-          //         context,
-          //         image: person.image,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          Flex(
-            direction: Axis.vertical,
-            children: [
-              _buildPersonName(
-                context,
-                name: person.name,
-              ),
-            ],
-          ),
-          Flex(
-            direction: Axis.vertical,
-            children: [
-              _buildPersonStatus(
-                context,
-                person: person,
-              ),
-            ],
-          ),
-          // Flex(
-          //   direction: Axis.vertical,
-          //   children: [
-          //     _buildPersonRow(
-          //       context,
-          //       title: "Gender: ",
-          //       value: person.gender,
-          //     ),
-          //   ],
-          // ),
-          _buildPersonRow(
-            context,
-            title: "Gender: ",
-            value: person.gender,
-          ),
-          _buildPersonRow(
-            context,
-            title: "Origin: ",
-            value: person.origin.name,
-          ),
-          _buildPersonRow(
-            context,
-            title: "Location: ",
-            value: "\n${person.location.name}",
-          ),
-          // GestureDetector(
-          //   onTap: () => {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => LocationDetailsPage(
-          //           url: person.location.url,
-          //         ),
-          //       ),
-          //     )
-          //   },
-          //   child: Column(
-          //     children: [
-          //       Text(
-          //         'Origin location:',
-          //         overflow: TextOverflow.ellipsis,
-          //         softWrap: true,
-          //         style: TextStyle(
-          //           fontSize: 16.0,
-          //           color:
-          //               person.status == 'Dead' ? Colors.white70 : Colors.black,
-          //         ),
-          //       ),
-          //       Text(
-          //         person.location.name,
-          //         overflow: TextOverflow.ellipsis,
-          //         softWrap: true,
-          //         style: TextStyle(
-          //           fontSize: 16.0,
-          //           color:
-          //               person.status == 'Dead' ? Colors.white70 : Colors.black,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-        ],
+    final double radius = MediaQuery.of(context).size.width / 4;
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+        ),
+        child: Column(
+          children: [
+            _buildPersonAvatar(
+              context,
+              image: person.image,
+              radius: radius,
+            ),
+            _buildPersonName(
+              context,
+              name: person.name,
+            ),
+            _buildPersonStatus(
+              context,
+              person: person,
+            ),
+            _buildPersonRow(
+              context,
+              title: "Gender: ",
+              value: person.gender,
+            ),
+            _buildPersonRow(
+              context,
+              title: "Origin: ",
+              value: person.origin.name,
+            ),
+            _buildPersonRow(
+              context,
+              title: "Location: ",
+              value: "",
+            ),
+            _buildLocationButton(
+              context,
+              location: person.location,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -215,12 +155,13 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
   Widget _buildPersonAvatar(
     BuildContext context, {
     required String image,
+    required double radius,
   }) {
-    final double radius = MediaQuery.of(context).size.width / 4;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SizedBox(
         width: radius * 2,
+        height: radius * 2,
         child: ClipOval(
           child: Image.network(
             image,
@@ -282,36 +223,56 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
     required String title,
     required String value,
   }) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 16.0,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text.rich(
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16.0,
+        ),
+        child: Text.rich(
+          TextSpan(
+            children: [
               TextSpan(
-                children: [
-                  TextSpan(
-                    text: title,
-                    style: const TextStyle(
-                      color: Colors.black38,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  TextSpan(
-                    text: value,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                ],
+                text: title,
+                style: const TextStyle(
+                  color: Colors.black38,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.0,
+                ),
               ),
+              TextSpan(
+                text: value,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLocationButton(
+    BuildContext context, {
+    required Location location,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LocationDetailsPage(
+              url: location.url,
+              title: location.name,
             ),
           ),
-        ],
+        ),
+        child: Text(
+          location.name,
+        ),
       ),
     );
   }
