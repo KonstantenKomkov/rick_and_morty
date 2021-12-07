@@ -106,48 +106,47 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
     required Person person,
   }) {
     final double radius = MediaQuery.of(context).size.width / 4;
-    return SizedBox(
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-        ),
-        child: Column(
-          children: [
-            _buildPersonAvatar(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Center(
+            child: _buildPersonAvatar(
               context,
               image: person.image,
               radius: radius,
             ),
-            _buildPersonName(
-              context,
-              name: person.name,
-            ),
-            _buildPersonStatus(
+          ),
+          _buildPersonName(
+            context,
+            name: person.name,
+          ),
+          Center(
+            child: _buildPersonStatus(
               context,
               person: person,
             ),
-            _buildPersonRow(
-              context,
-              title: "Gender: ",
-              value: person.gender,
-            ),
+          ),
+          _buildPersonRow(
+            context,
+            title: "Gender: ",
+            value: person.gender,
+          ),
+          if (person.origin.name != "unknown")
             _buildPersonRow(
               context,
               title: "Origin: ",
               value: person.origin.name,
             ),
-            _buildPersonRow(
-              context,
-              title: "Location: ",
-              value: "",
-            ),
+          if (person.location.name != "unknown")
             _buildLocationButton(
               context,
               location: person.location,
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -270,8 +269,28 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
             ),
           ),
         ),
-        child: Text(
-          location.name,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Text(
+                location.name,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(
+                left: 8.0,
+              ),
+              child: Icon(
+                Icons.my_location,
+              ),
+            ),
+          ],
         ),
       ),
     );
