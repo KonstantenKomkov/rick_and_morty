@@ -42,7 +42,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
 
     final ApiResponse response = await loadObjectData(id: id);
 
-    if (response.isError ?? false) {
+    if (response.isError) {
       person = null;
       print("Error: ${response.error}");
     } else {

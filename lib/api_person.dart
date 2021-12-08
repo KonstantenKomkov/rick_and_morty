@@ -63,6 +63,7 @@ Future<ApiResponse> loadObjectData({
           jsonDecode(jsonResponse.body) as Map<String, dynamic>;
       return ApiResponse(
         results: decodedData,
+        isError: false,
       );
     } catch (e) {
       return ApiResponse(

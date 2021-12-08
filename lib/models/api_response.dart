@@ -8,18 +8,18 @@ class ApiResponse<T> {
   final Info? info;
   final dynamic results;
   @JsonKey(
-    ignore: true,
+    defaultValue: false,
   )
-  final bool? isError;
+  bool isError;
   @JsonKey(
     ignore: true,
   )
-  final String? error;
+  String? error;
 
   ApiResponse({
     this.info,
     this.results,
-    this.isError,
+    required this.isError,
     this.error,
   });
 

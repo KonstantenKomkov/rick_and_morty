@@ -61,7 +61,7 @@ class _PersonListPageState extends State<PersonListPage> {
     setState(() {
       isLoading = false;
     });
-    if (response.isError ?? false) {
+    if (response.isError) {
       persons += [];
       print('Error: ${response.error}');
     } else {
