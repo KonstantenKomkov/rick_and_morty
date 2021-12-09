@@ -62,22 +62,19 @@ class _PersonListPageState extends State<PersonListPage> {
       isLoading = false;
     });
     if (response.isError) {
-      persons += [];
       print('Error: ${response.error}');
     } else {
       info = response.info;
-      if (response.results == null) {
-        persons += [];
-      } else {
+      if (response.results != null) {
         try {
           final List<dynamic> decodedData = response.results! as List<dynamic>;
-          persons += decodedData
+          final List<Person> _persons = decodedData
               .map(
                 (person) => Person.fromJson(person as Map<String, dynamic>),
               )
               .toList();
+          persons.addAll(_persons);
         } catch (e) {
-          persons += [];
           print('Error: $e');
         }
       }
@@ -130,10 +127,6 @@ class _PersonListPageState extends State<PersonListPage> {
                             person: persons[index],
                           );
                         } else {
-                          Timer(const Duration(milliseconds: 30), () {
-                            _scrollController.jumpTo(
-                                _scrollController.position.maxScrollExtent);
-                          });
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
@@ -142,11 +135,53 @@ class _PersonListPageState extends State<PersonListPage> {
                       controller: _scrollController,
                     ),
                   )
-                : const Center(
-                    child: Text(
-                      'No characters',
-                    ),
+                : const Text(
+                    'No characters',
                   ),
           );
   }
+
+  // Widget _buildBody(
+  //   BuildContext context,
+  // ) {
+  //   return isLoading
+  //       ? const Center(
+  //           child: CircularProgressIndicator(),
+  //         )
+  //       : Center(
+  //           child: persons.isNotEmpty
+  //               ? Padding(
+  //                   padding: const EdgeInsets.only(
+  //                     top: 8.0,
+  //                   ),
+  //                   child: ListView.builder(
+  //                     itemBuilder: (context, index) {
+  //                       return FutureBuilder(
+  //                         future: loadPersonsList(),
+  //                         builder: (context, snapshot) {
+  //                           switch (snapshot.connectionState) {
+  //                             case ConnectionState.none:
+  //                             case ConnectionState.waiting:
+  //                               return const CircularProgressIndicator();
+  //                             case ConnectionState.active:
+  //                             case ConnectionState.done:
+  //                               if (snapshot.hasError) {
+  //                                 return Text('Error: ${snapshot.error}');
+  //                               } else {
+  //                                 return PersonListItem(
+  //                                   person: persons[index],
+  //                                 );
+  //                               }
+  //                           }
+  //                         },
+  //                       );
+  //                     },
+  //                     controller: _scrollController,
+  //                   ),
+  //                 )
+  //               : const Text(
+  //                   'No characters',
+  //                 ),
+  //         );
+  // }
 }
