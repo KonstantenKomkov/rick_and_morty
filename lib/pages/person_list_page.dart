@@ -108,80 +108,32 @@ class _PersonListPageState extends State<PersonListPage> {
   Widget _buildBody(
     BuildContext context,
   ) {
-    return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : Center(
-            child: persons.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8.0,
-                    ),
-                    child: ListView.builder(
-                      itemCount: persons.length + (isLoading ? 1 : 0),
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        if (index < persons.length) {
-                          return PersonListItem(
-                            person: persons[index],
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                      controller: _scrollController,
-                    ),
-                  )
-                : const Text(
-                    'No characters',
-                  ),
-          );
+    return Center(
+      child: persons.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+              ),
+              child: ListView.builder(
+                itemCount: persons.length + (isLoading ? 1 : 0),
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  if (index < persons.length) {
+                    return PersonListItem(
+                      person: persons[index],
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+                controller: _scrollController,
+              ),
+            )
+          : const Text(
+              'No characters',
+            ),
+    );
   }
-
-  // Widget _buildBody(
-  //   BuildContext context,
-  // ) {
-  //   return isLoading
-  //       ? const Center(
-  //           child: CircularProgressIndicator(),
-  //         )
-  //       : Center(
-  //           child: persons.isNotEmpty
-  //               ? Padding(
-  //                   padding: const EdgeInsets.only(
-  //                     top: 8.0,
-  //                   ),
-  //                   child: ListView.builder(
-  //                     itemBuilder: (context, index) {
-  //                       return FutureBuilder(
-  //                         future: loadPersonsList(),
-  //                         builder: (context, snapshot) {
-  //                           switch (snapshot.connectionState) {
-  //                             case ConnectionState.none:
-  //                             case ConnectionState.waiting:
-  //                               return const CircularProgressIndicator();
-  //                             case ConnectionState.active:
-  //                             case ConnectionState.done:
-  //                               if (snapshot.hasError) {
-  //                                 return Text('Error: ${snapshot.error}');
-  //                               } else {
-  //                                 return PersonListItem(
-  //                                   person: persons[index],
-  //                                 );
-  //                               }
-  //                           }
-  //                         },
-  //                       );
-  //                     },
-  //                     controller: _scrollController,
-  //                   ),
-  //                 )
-  //               : const Text(
-  //                   'No characters',
-  //                 ),
-  //         );
-  // }
 }
