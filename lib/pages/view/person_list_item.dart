@@ -5,6 +5,7 @@ import 'package:rick_and_morty/pages/view/person_status.dart';
 
 class PersonListItem extends StatelessWidget {
   final Person person;
+  static const String placeholder = 'assets/placeholder.jpg';
   const PersonListItem({
     Key? key,
     required this.person,
