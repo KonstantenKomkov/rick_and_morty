@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/pages/location_details_page.dart';
@@ -15,6 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Rick and Morty',
       home: const PersonListPage(),
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
       initialRoute: '/',
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(

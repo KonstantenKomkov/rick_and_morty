@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/api_person.dart';
 import 'package:rick_and_morty/models/api_response.dart';
@@ -27,6 +26,7 @@ class _PersonListPageState extends State<PersonListPage> {
   List<Person> persons = [];
   bool isLoading = false;
   bool loadNextPage = false;
+  bool listViewBuilt = false;
   Info? info;
   final ScrollController _scrollController = ScrollController();
 
@@ -60,19 +60,19 @@ class _PersonListPageState extends State<PersonListPage> {
     );
     setState(() {
       isLoading = false;
+      listViewBuilt = true;
     });
     if (response.isError) {
       print('Error: ${response.error}');
+      BotToast.showText(text: "Error of loading data");
     } else {
       info = response.info;
       if (response.results != null) {
         try {
-          final List<dynamic> decodedData = response.results! as List<dynamic>;
-          final List<Person> _persons = decodedData
-              .map(
-                (person) => Person.fromJson(person as Map<String, dynamic>),
-              )
-              .toList();
+          final List<Person> _persons = response.results! as List<Person>;
+          // .map(
+          //     (person) => Person.fromJson(person as Map<String, dynamic>))
+          // .toList() as List<Person>;
           persons.addAll(_persons);
         } catch (e) {
           print('Error: $e');
@@ -114,22 +114,26 @@ class _PersonListPageState extends State<PersonListPage> {
               padding: const EdgeInsets.only(
                 top: 8.0,
               ),
-              child: ListView.builder(
-                itemCount: persons.length + (isLoading ? 1 : 0),
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  if (index < persons.length) {
-                    return PersonListItem(
-                      person: persons[index],
-                    );
-                  } else {
-                    return const Center(
+              child: listViewBuilt
+                  ? ListView.builder(
+                      itemCount: persons.length + (isLoading ? 1 : 0),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        if (index < persons.length) {
+                          return PersonListItem(
+                            person: persons[index],
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                      controller: _scrollController,
+                    )
+                  : const Center(
                       child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-                controller: _scrollController,
-              ),
+                    ),
             )
           : const Text(
               'No characters',

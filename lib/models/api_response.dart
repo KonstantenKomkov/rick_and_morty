@@ -6,7 +6,7 @@ part 'api_response.g.dart';
 @JsonSerializable()
 class ApiResponse<T> {
   final Info? info;
-  final dynamic results;
+  T? results;
   @JsonKey(
     defaultValue: false,
   )

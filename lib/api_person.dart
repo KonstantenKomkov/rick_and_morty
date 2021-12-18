@@ -31,9 +31,24 @@ Future<ApiResponse> loadListData({
     try {
       final Map<String, dynamic> decodedData =
           jsonDecode(jsonResponse.body) as Map<String, dynamic>;
-      return ApiResponse.fromJson(
+
+      final apiResponse = ApiResponse.fromJson(
         decodedData,
       );
+
+      if (apiResponse.results == null) {
+        return ApiResponse<List>(
+          info: apiResponse.info,
+          results: [],
+          isError: false,
+        );
+      } else {
+        return ApiResponse<List<Map<String, dynamic>>>(
+          info: apiResponse.info,
+          results: apiResponse.results! as List<Map<String, dynamic>>,
+          isError: false,
+        );
+      }
     } catch (e) {
       return ApiResponse(
         isError: true,
