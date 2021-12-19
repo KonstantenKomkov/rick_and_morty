@@ -23,4 +23,3 @@
 [online documentation](https://flutter.dev/docs).
 
 [1]: https://rickandmortyapi.com/documentation
-Просто оставлю это здесь)
