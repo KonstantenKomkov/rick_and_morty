@@ -37,13 +37,13 @@ Future<ApiResponse> loadListData({
       );
 
       if (apiResponse.results == null) {
-        return ApiResponse<List>(
+        return ApiResponse(
           info: apiResponse.info,
-          results: [],
+          results: [] as List,
           isError: false,
         );
       } else {
-        return ApiResponse<List<Map<String, dynamic>>>(
+        return ApiResponse(
           info: apiResponse.info,
           results: apiResponse.results! as List<Map<String, dynamic>>,
           isError: false,

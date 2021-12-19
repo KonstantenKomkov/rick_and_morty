@@ -4,22 +4,26 @@ import 'package:rick_and_morty/models/info.dart';
 part 'api_response.g.dart';
 
 @JsonSerializable()
-class ApiResponse<T> {
+class ApiResponse {
   final Info? info;
-  T? results;
-  @JsonKey(
-    defaultValue: false,
-  )
-  bool isError;
+  dynamic results;
   @JsonKey(
     ignore: true,
   )
   String? error;
+  bool get isError => _isError(error);
+
+  bool _isError(String? error) {
+    if (error == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   ApiResponse({
     this.info,
     this.results,
-    required this.isError,
     this.error,
   });
 
