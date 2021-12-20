@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/api_person.dart';
 import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/info.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/pages/view/person_list_item.dart';
+import 'package:rick_and_morty/response_methods.dart';
 
 class PersonListPage extends StatefulWidget {
   final String? title;
@@ -32,12 +32,12 @@ class _PersonListPageState extends State<PersonListPage> {
 
   @override
   void initState() {
-    loadPersonsList();
+    loadListData();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         loadNextPage = true;
-        loadPersonsList();
+        loadListData();
         loadNextPage = false;
       }
     });
@@ -50,11 +50,12 @@ class _PersonListPageState extends State<PersonListPage> {
     super.dispose();
   }
 
-  Future<void> loadPersonsList() async {
+  Future<void> loadListData() async {
     setState(() {
       isLoading = true;
     });
-    final ApiResponse response = await loadListData(
+    final ApiResponse response = await getListData(
+      undecodedPath: 'api/character',
       loadNextPage: loadNextPage,
       info: info,
     );
@@ -63,19 +64,22 @@ class _PersonListPageState extends State<PersonListPage> {
       listViewBuilt = true;
     });
     if (response.isError) {
-      print('Error: ${response.error}');
+      // print('Error: ${response.error}');
       BotToast.showText(text: "Error of loading data");
     } else {
       info = response.info;
       if (response.results != null) {
         try {
-          final List<Person> _persons = response.results! as List<Person>;
-          // .map(
-          //     (person) => Person.fromJson(person as Map<String, dynamic>))
-          // .toList() as List<Person>;
+          final List<dynamic> decodedData = response.results! as List<dynamic>;
+          final List<Person> _persons = decodedData
+              .map(
+                (person) => Person.fromJson(person as Map<String, dynamic>),
+              )
+              .toList();
           persons.addAll(_persons);
         } catch (e) {
-          print('Error: $e');
+          // print('Error: $e');
+          BotToast.showText(text: "Error of parsing data");
         }
       }
     }

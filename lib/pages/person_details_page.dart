@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/api_person.dart';
 import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/location.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/pages/location_details_page.dart';
 import 'package:rick_and_morty/pages/view/person_status.dart';
+import 'package:rick_and_morty/response_methods.dart';
 
 class PersonDetailsPage extends StatefulWidget {
   static const String routeName = '/person_details';
@@ -40,7 +40,9 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
       isLoading = true;
     });
 
-    final ApiResponse response = await loadObjectData(id: id);
+    final ApiResponse response = await getObjectData(
+      undecodedPath: 'api/character/$id',
+    );
 
     if (response.isError) {
       person = null;
