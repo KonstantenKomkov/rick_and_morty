@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:rick_and_morty/config.dart';
 import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/info.dart';
 
-Future<ApiResponse> loadListData({
+Future<ApiResponse> getListData({
+  required String undecodedPath,
+  Map<String, dynamic>? queryParameters,
   bool? loadNextPage,
   Info? info,
 }) async {
@@ -15,14 +18,13 @@ Future<ApiResponse> loadListData({
       uri = Uri.parse(info!.next!);
     } catch (e) {
       return ApiResponse(
-        isError: true,
         error: e.toString(),
       );
     }
   } else {
     uri = Uri.http(
-      'rickandmortyapi.com',
-      'api/character',
+      url,
+      undecodedPath,
     );
   }
 
@@ -39,36 +41,33 @@ Future<ApiResponse> loadListData({
       if (apiResponse.results == null) {
         return ApiResponse(
           info: apiResponse.info,
-          results: [] as List,
-          isError: false,
+          results: [],
         );
       } else {
         return ApiResponse(
           info: apiResponse.info,
-          results: apiResponse.results! as List<Map<String, dynamic>>,
-          isError: false,
+          results: apiResponse.results,
         );
       }
     } catch (e) {
       return ApiResponse(
-        isError: true,
         error: e.toString(),
       );
     }
   } else {
     return ApiResponse(
-      isError: true,
       error: "Unexpected error occured!",
     );
   }
 }
 
-Future<ApiResponse> loadObjectData({
-  required int id,
+Future<ApiResponse> getObjectData({
+  required String undecodedPath,
+  Map<String, dynamic>? queryParameters,
 }) async {
   final Uri uri = Uri.http(
-    'rickandmortyapi.com',
-    'api/character/$id',
+    url,
+    undecodedPath,
   );
 
   final Response jsonResponse = await get(uri);
@@ -78,17 +77,14 @@ Future<ApiResponse> loadObjectData({
           jsonDecode(jsonResponse.body) as Map<String, dynamic>;
       return ApiResponse(
         results: decodedData,
-        isError: false,
       );
     } catch (e) {
       return ApiResponse(
-        isError: true,
         error: "Error: $e",
       );
     }
   } else {
     return ApiResponse(
-      isError: true,
       error: "Unexpected error occured!",
     );
   }
