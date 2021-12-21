@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/models/person.dart';
+import 'package:rick_and_morty/pages/view/person_avatar.dart';
 import 'package:rick_and_morty/pages/view/person_status.dart';
 
 class PersonListItem extends StatelessWidget {
@@ -50,7 +50,6 @@ class PersonListItem extends StatelessWidget {
         vertical: 4.0,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildCardImage(context),
           Flexible(child: _buildCardInfo(context)),
@@ -62,9 +61,10 @@ class PersonListItem extends StatelessWidget {
   Widget _buildCardImage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: CircleAvatar(
-        radius: 50.0,
-        backgroundImage: NetworkImage(person.image),
+      child: PersonAvatar(
+        placeholder: 'assets/placeholder.jpeg',
+        image: person.image,
+        radius: 50,
       ),
     );
   }
