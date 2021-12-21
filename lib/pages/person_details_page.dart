@@ -3,6 +3,7 @@ import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/location.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/pages/location_details_page.dart';
+import 'package:rick_and_morty/pages/view/person_avatar.dart';
 import 'package:rick_and_morty/pages/view/person_status.dart';
 import 'package:rick_and_morty/response_methods.dart';
 
@@ -116,10 +117,12 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(
-            child: _buildPersonAvatar(
-              context,
-              image: person.image,
-              radius: radius,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: PersonAvatar(
+                image: person.image,
+                radius: radius,
+              ),
             ),
           ),
           _buildPersonName(
@@ -149,25 +152,6 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
               location: person.location,
             ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPersonAvatar(
-    BuildContext context, {
-    required String image,
-    required double radius,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SizedBox(
-        width: radius * 2,
-        height: radius * 2,
-        child: ClipOval(
-          child: Image.network(
-            image,
-          ),
-        ),
       ),
     );
   }
