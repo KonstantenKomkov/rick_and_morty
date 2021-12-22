@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:rick_and_morty/models/api_person.dart';
 import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/info.dart';
 import 'package:rick_and_morty/models/person.dart';
@@ -35,17 +36,22 @@ class _PersonListPageState extends State<PersonListPage> {
 
   @override
   void initState() {
-    loadListData();
+    loadPersonsList();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         //loadNextPage = true;
+
         loadNextPage.value = true;
-        loadListData();
+        loadPersonsList(
+          loadNextPage: true,
+          info: info,
+        );
         loadNextPage.value = false;
         //loadNextPage = false;
       }
     });
+    print("ListViewBuilt: = ${listViewBuilt.value}");
     super.initState();
   }
 
@@ -71,6 +77,7 @@ class _PersonListPageState extends State<PersonListPage> {
     // });
     isLoading.value = false;
     listViewBuilt.value = true;
+    print("ListViewBuilt: = ${listViewBuilt.value}");
     if (response.isError) {
       // print('Error: ${response.error}');
       BotToast.showText(text: "Error of loading data");
@@ -124,12 +131,11 @@ class _PersonListPageState extends State<PersonListPage> {
       child: persons.isNotEmpty
           ? ValueListenableBuilder(
               valueListenable: listViewBuilt,
-              builder: (context, value, child) {
+              builder: (BuildContext context, bool value, Widget? child) {
                 return Padding(
                   padding: const EdgeInsets.only(
                     top: 8.0,
                   ),
-                  //child: listViewBuilt
                   child: listViewBuilt.value
                       ? ListView.builder(
                           // itemCount: persons.length + (isLoading ? 1 : 0),
