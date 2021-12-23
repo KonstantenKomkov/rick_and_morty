@@ -1,11 +1,10 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/info.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/response_methods.dart';
 
 Future<ApiResponse> loadPersonsList({
-  required bool loadNextPage,
+  bool loadNextPage = false,
   Info? info,
 }) async {
   final ApiResponse response = await getListData(
@@ -37,9 +36,9 @@ Future<ApiResponse> loadPersonsList({
         );
       }
     } else {
-      ApiResponse(
+      return ApiResponse(
         info: response.info,
-        results: response.results,
+        results: [],
       );
     }
   }
