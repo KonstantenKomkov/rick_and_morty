@@ -38,20 +38,16 @@ class _PersonListPageState extends State<PersonListPage> {
   void initState() {
     loadPersonsList();
     _scrollController.addListener(() {
+      // TODO: если ответ до этого не был пуст и без ошибок
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        //loadNextPage = true;
-
         loadNextPage.value = true;
         loadPersonsList(
           loadNextPage: true,
           info: info,
         );
-        loadNextPage.value = false;
-        //loadNextPage = false;
       }
     });
-    print("ListViewBuilt: = ${listViewBuilt.value}");
     super.initState();
   }
 
@@ -59,6 +55,17 @@ class _PersonListPageState extends State<PersonListPage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> myFunc() async {
+    final ApiResponse response = await loadPersonsList();
+    if (response.isError) {
+      BotToast.showText(text: response.error!);
+    } else {
+      info = response.info;
+      //res
+      //if (response.results. ) {}
+    }
   }
 
   Future<void> loadListData() async {

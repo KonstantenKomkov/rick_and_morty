@@ -34,22 +34,30 @@ Future<ApiResponse> getListData({
       final Map<String, dynamic> decodedData =
           jsonDecode(jsonResponse.body) as Map<String, dynamic>;
 
-      final apiResponse = ApiResponse.fromJson(
+      final ApiResponse<List<dynamic>> apiResponse = ApiResponse.fromJson(
         decodedData,
-      );
+      ) as ApiResponse<List<dynamic>>;
 
+      if (apiResponse.results is Type) {
+        print("It's List");
+      }
+
+      print("ApiResponse.results type is - ${apiResponse.results.runtimeType}");
       if (apiResponse.results == null) {
         return ApiResponse(
           info: apiResponse.info,
           results: [],
         );
       } else {
+        print(
+            "ApiResponse.results type is - ${apiResponse.results.runtimeType}");
         return ApiResponse(
           info: apiResponse.info,
           results: apiResponse.results,
         );
       }
     } catch (e) {
+      print(e);
       return ApiResponse(
         error: e.toString(),
       );
