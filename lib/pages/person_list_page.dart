@@ -36,16 +36,13 @@ class _PersonListPageState extends State<PersonListPage> {
 
   @override
   void initState() {
-    loadPersonsList();
+    myFunc();
     _scrollController.addListener(() {
       // TODO: если ответ до этого не был пуст и без ошибок
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         loadNextPage.value = true;
-        loadPersonsList(
-          loadNextPage: true,
-          info: info,
-        );
+        myFunc();
       }
     });
     super.initState();
@@ -58,47 +55,20 @@ class _PersonListPageState extends State<PersonListPage> {
   }
 
   Future<void> myFunc() async {
-    final ApiResponse response = await loadPersonsList();
+    isLoading.value = true;
+    final ApiResponse response = await loadPersonsList(
+      loadNextPage: loadNextPage.value,
+      info: info,
+    );
+    isLoading.value = false;
+    listViewBuilt.value = true;
     if (response.isError) {
       BotToast.showText(text: response.error!);
     } else {
       info = response.info;
-      //res
-      //if (response.results. ) {}
-    }
-  }
-
-  Future<void> loadListData() async {
-    // setState(() {
-    //   isLoading = true;
-    // });
-    isLoading.value = true;
-    final ApiResponse response = await getListData(
-      undecodedPath: 'api/character',
-      loadNextPage: loadNextPage.value, //loadNextPage,
-      info: info,
-    );
-    // setState(() {
-    //   isLoading = false;
-    //   listViewBuilt = true;
-    // });
-    isLoading.value = false;
-    listViewBuilt.value = true;
-    print("ListViewBuilt: = ${listViewBuilt.value}");
-    if (response.isError) {
-      // print('Error: ${response.error}');
-      BotToast.showText(text: "Error of loading data");
-    } else {
-      info = response.info;
       if (response.results != null) {
         try {
-          final List<dynamic> decodedData = response.results! as List<dynamic>;
-          final List<Person> _persons = decodedData
-              .map(
-                (person) => Person.fromJson(person as Map<String, dynamic>),
-              )
-              .toList();
-          persons.addAll(_persons);
+          persons.addAll(response.results as List<Person>);
         } catch (e) {
           // print('Error: $e');
           BotToast.showText(text: "Error of parsing data");
@@ -106,6 +76,45 @@ class _PersonListPageState extends State<PersonListPage> {
       }
     }
   }
+
+  // Future<void> loadListData() async {
+  //   // setState(() {
+  //   //   isLoading = true;
+  //   // });
+  //   isLoading.value = true;
+  //   final ApiResponse response = await getListData(
+  //     undecodedPath: 'api/character',
+  //     loadNextPage: loadNextPage.value, //loadNextPage,
+  //     info: info,
+  //   );
+  //   // setState(() {
+  //   //   isLoading = false;
+  //   //   listViewBuilt = true;
+  //   // });
+  //   isLoading.value = false;
+  //   listViewBuilt.value = true;
+  //   print("ListViewBuilt: = ${listViewBuilt.value}");
+  //   if (response.isError) {
+  //     // print('Error: ${response.error}');
+  //     BotToast.showText(text: "Error of loading data");
+  //   } else {
+  //     info = response.info;
+  //     if (response.results != null) {
+  //       try {
+  //         final List<dynamic> decodedData = response.results! as List<dynamic>;
+  //         final List<Person> _persons = decodedData
+  //             .map(
+  //               (person) => Person.fromJson(person as Map<String, dynamic>),
+  //             )
+  //             .toList();
+  //         persons.addAll(_persons);
+  //       } catch (e) {
+  //         // print('Error: $e');
+  //         BotToast.showText(text: "Error of parsing data");
+  //       }
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
