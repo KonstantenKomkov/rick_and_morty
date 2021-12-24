@@ -11,11 +11,11 @@ ApiResponse<T> _$ApiResponseFromJson<T>(Map<String, dynamic> json) =>
       info: json['info'] == null
           ? null
           : Info.fromJson(json['info'] as Map<String, dynamic>),
-      results: _Converter<T?>().fromJson(json['results']),
+      results: json['results'],
     );
 
 Map<String, dynamic> _$ApiResponseToJson<T>(ApiResponse<T> instance) =>
     <String, dynamic>{
       'info': instance.info,
-      'results': _Converter<T?>().toJson(instance.results),
+      'results': instance.results,
     };
