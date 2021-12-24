@@ -18,8 +18,10 @@
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- [Генератор иконок][2]
 
 # Документация Flutter
 [online documentation](https://flutter.dev/docs).
 
 [1]: https://rickandmortyapi.com/documentation
+[2]: https://icon.kitchen/
