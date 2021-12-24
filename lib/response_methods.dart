@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:rick_and_morty/config.dart';
 import 'package:rick_and_morty/models/api_response.dart';
@@ -34,30 +33,19 @@ Future<ApiResponse> getListData({
       final Map<String, dynamic> decodedData =
           jsonDecode(jsonResponse.body) as Map<String, dynamic>;
 
-      final ApiResponse<List<dynamic>> apiResponse = ApiResponse.fromJson(
-        decodedData,
-      ) as ApiResponse<List<dynamic>>;
-
-      if (apiResponse.results is Type) {
-        print("It's List");
-      }
-
-      print("ApiResponse.results type is - ${apiResponse.results.runtimeType}");
+      final ApiResponse apiResponse = ApiResponse.fromJson(decodedData);
       if (apiResponse.results == null) {
         return ApiResponse(
           info: apiResponse.info,
           results: [],
         );
       } else {
-        print(
-            "ApiResponse.results type is - ${apiResponse.results.runtimeType}");
         return ApiResponse(
           info: apiResponse.info,
           results: apiResponse.results,
         );
       }
     } catch (e) {
-      print(e);
       return ApiResponse(
         error: e.toString(),
       );
