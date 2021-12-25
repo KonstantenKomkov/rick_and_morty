@@ -56,12 +56,16 @@ class _PersonListPageState extends State<PersonListPage> {
 
   Future<void> myFunc() async {
     isLoading.value = true;
+    print("listViewBuilt.value: = ${listViewBuilt.value}");
+    print("isLoading.value: = ${isLoading.value}");
     final ApiResponse response = await loadPersonsList(
       loadNextPage: loadNextPage.value,
       info: info,
     );
     isLoading.value = false;
+    print("isLoading.value: = ${isLoading.value}");
     listViewBuilt.value = true;
+    print("listViewBuilt.value: = ${listViewBuilt.value}");
     if (response.isError) {
       BotToast.showText(text: response.error!);
     } else {
@@ -75,7 +79,84 @@ class _PersonListPageState extends State<PersonListPage> {
         }
       }
     }
+    print("persons.length: = ${persons.length}");
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: _buildBody(
+        context,
+      ),
+      resizeToAvoidBottomInset: false,
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(
+    BuildContext context,
+  ) {
+    return AppBar(
+      title: Text(
+        widget.title ?? "",
+        style: const TextStyle(
+          fontSize: 28.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+  ) {
+    return Center(
+      child: persons.isNotEmpty
+          ? ValueListenableBuilder(
+              valueListenable: listViewBuilt,
+              builder: (
+                BuildContext context,
+                bool value,
+                Widget? child,
+              ) {
+                return listViewBuilt.value
+                    ? ListView.builder(
+                        // itemCount: persons.length + (isLoading ? 1 : 0),
+                        itemCount: persons.length + (isLoading.value ? 1 : 0),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          print("persons.length: = ${persons.length}");
+                          if (index < persons.length) {
+                            if (index == 0) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: PersonListItem(
+                                  person: persons[index],
+                                ),
+                              );
+                            } else {
+                              return PersonListItem(
+                                person: persons[index],
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                        controller: _scrollController,
+                      )
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      );
+              },
+            )
+          : const Text(
+              'No characters',
+            ),
+    );
+  }
+}
 
   // Future<void> loadListData() async {
   //   // setState(() {
@@ -115,70 +196,3 @@ class _PersonListPageState extends State<PersonListPage> {
   //     }
   //   }
   // }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(context),
-      body: _buildBody(
-        context,
-      ),
-      resizeToAvoidBottomInset: false,
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(
-    BuildContext context,
-  ) {
-    return AppBar(
-      title: Text(
-        widget.title ?? "",
-        style: const TextStyle(
-          fontSize: 28.0,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBody(
-    BuildContext context,
-  ) {
-    return Center(
-      child: persons.isNotEmpty
-          ? ValueListenableBuilder(
-              valueListenable: listViewBuilt,
-              builder: (BuildContext context, bool value, Widget? child) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    top: 8.0,
-                  ),
-                  child: listViewBuilt.value
-                      ? ListView.builder(
-                          // itemCount: persons.length + (isLoading ? 1 : 0),
-                          itemCount: persons.length + (isLoading.value ? 1 : 0),
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            if (index < persons.length) {
-                              return PersonListItem(
-                                person: persons[index],
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                          controller: _scrollController,
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                );
-              },
-            )
-          : const Text(
-              'No characters',
-            ),
-    );
-  }
-}

@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rick_and_morty/app_theme.dart';
 import 'package:rick_and_morty/pages/location_details_page.dart';
 import 'package:rick_and_morty/pages/not_found_page.dart';
 import 'package:rick_and_morty/pages/person_details_page.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: appTheme,
       title: 'Rick and Morty',
       home: const PersonListPage(),
       builder: BotToastInit(),
