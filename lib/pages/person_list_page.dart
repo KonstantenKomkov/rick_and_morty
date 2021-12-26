@@ -25,12 +25,9 @@ class PersonListPage extends StatefulWidget {
 
 class _PersonListPageState extends State<PersonListPage> {
   List<Person> persons = [];
-  // bool isLoading = false;
-  // bool loadNextPage = false;
-  // bool listViewBuilt = false;
-  ValueNotifier<bool> isLoading = ValueNotifier(false);
-  ValueNotifier<bool> loadNextPage = ValueNotifier(false);
-  ValueNotifier<bool> listViewBuilt = ValueNotifier(false);
+  bool isLoading = false;
+  bool loadNextPage = false;
+  bool listViewBuilt = false;
   Info? info;
   final ScrollController _scrollController = ScrollController();
 
@@ -41,7 +38,7 @@ class _PersonListPageState extends State<PersonListPage> {
       // TODO: если ответ до этого не был пуст и без ошибок
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        loadNextPage.value = true;
+        loadNextPage = true;
         myFunc();
       }
     });
@@ -55,17 +52,17 @@ class _PersonListPageState extends State<PersonListPage> {
   }
 
   Future<void> myFunc() async {
-    isLoading.value = true;
-    print("listViewBuilt.value: = ${listViewBuilt.value}");
-    print("isLoading.value: = ${isLoading.value}");
+    setState(() {
+      isLoading = true;
+    });
     final ApiResponse response = await loadPersonsList(
-      loadNextPage: loadNextPage.value,
+      loadNextPage: loadNextPage,
       info: info,
     );
-    isLoading.value = false;
-    print("isLoading.value: = ${isLoading.value}");
-    listViewBuilt.value = true;
-    print("listViewBuilt.value: = ${listViewBuilt.value}");
+    setState(() {
+      isLoading = false;
+      listViewBuilt = true;
+    });
     if (response.isError) {
       BotToast.showText(text: response.error!);
     } else {
@@ -79,7 +76,6 @@ class _PersonListPageState extends State<PersonListPage> {
         }
       }
     }
-    print("persons.length: = ${persons.length}");
   }
 
   @override
@@ -111,46 +107,35 @@ class _PersonListPageState extends State<PersonListPage> {
   ) {
     return Center(
       child: persons.isNotEmpty
-          ? ValueListenableBuilder(
-              valueListenable: listViewBuilt,
-              builder: (
-                BuildContext context,
-                bool value,
-                Widget? child,
-              ) {
-                return listViewBuilt.value
-                    ? ListView.builder(
-                        // itemCount: persons.length + (isLoading ? 1 : 0),
-                        itemCount: persons.length + (isLoading.value ? 1 : 0),
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          print("persons.length: = ${persons.length}");
-                          if (index < persons.length) {
-                            if (index == 0) {
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: PersonListItem(
-                                  person: persons[index],
-                                ),
-                              );
-                            } else {
-                              return PersonListItem(
-                                person: persons[index],
-                              );
-                            }
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                        controller: _scrollController,
-                      )
-                    : const Center(
+          ? listViewBuilt
+              ? ListView.builder(
+                  itemCount: persons.length + (isLoading ? 1 : 0),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    if (index < persons.length) {
+                      if (index == 0) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: PersonListItem(
+                            person: persons[index],
+                          ),
+                        );
+                      } else {
+                        return PersonListItem(
+                          person: persons[index],
+                        );
+                      }
+                    } else {
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
-              },
-            )
+                    }
+                  },
+                  controller: _scrollController,
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                )
           : const Text(
               'No characters',
             ),
