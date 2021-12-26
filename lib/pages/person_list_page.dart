@@ -6,7 +6,6 @@ import 'package:rick_and_morty/models/api_response.dart';
 import 'package:rick_and_morty/models/info.dart';
 import 'package:rick_and_morty/models/person.dart';
 import 'package:rick_and_morty/pages/view/person_list_item.dart';
-import 'package:rick_and_morty/response_methods.dart';
 
 class PersonListPage extends StatefulWidget {
   final String? title;
@@ -142,42 +141,3 @@ class _PersonListPageState extends State<PersonListPage> {
     );
   }
 }
-
-  // Future<void> loadListData() async {
-  //   // setState(() {
-  //   //   isLoading = true;
-  //   // });
-  //   isLoading.value = true;
-  //   final ApiResponse response = await getListData(
-  //     undecodedPath: 'api/character',
-  //     loadNextPage: loadNextPage.value, //loadNextPage,
-  //     info: info,
-  //   );
-  //   // setState(() {
-  //   //   isLoading = false;
-  //   //   listViewBuilt = true;
-  //   // });
-  //   isLoading.value = false;
-  //   listViewBuilt.value = true;
-  //   print("ListViewBuilt: = ${listViewBuilt.value}");
-  //   if (response.isError) {
-  //     // print('Error: ${response.error}');
-  //     BotToast.showText(text: "Error of loading data");
-  //   } else {
-  //     info = response.info;
-  //     if (response.results != null) {
-  //       try {
-  //         final List<dynamic> decodedData = response.results! as List<dynamic>;
-  //         final List<Person> _persons = decodedData
-  //             .map(
-  //               (person) => Person.fromJson(person as Map<String, dynamic>),
-  //             )
-  //             .toList();
-  //         persons.addAll(_persons);
-  //       } catch (e) {
-  //         // print('Error: $e');
-  //         BotToast.showText(text: "Error of parsing data");
-  //       }
-  //     }
-  //   }
-  // }
