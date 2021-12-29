@@ -93,9 +93,11 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
             child: CircularProgressIndicator(),
           )
         : person != null
-            ? _buildPersonDetailsWidget(
-                context,
-                person: person,
+            ? SingleChildScrollView(
+                child: _buildPersonDetailsWidget(
+                  context,
+                  person: person,
+                ),
               )
             : const Center(
                 child: Text(
@@ -116,14 +118,19 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: PersonAvatar(
-                image: person.image,
-                radius: radius,
+          Flex(
+            direction: Axis.vertical,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: PersonAvatar(
+                    image: person.image,
+                    radius: radius,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           _buildPersonName(
             context,
