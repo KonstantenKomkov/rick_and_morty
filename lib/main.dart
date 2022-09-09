@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class App extends StatefulWidget {
-  App({Key? key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   _AppState createState() => _AppState();
@@ -38,28 +38,28 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   // https://stackoverflow.com/questions/58260648/how-to-listen-for-changes-to-platformbrightness-in-flutter
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
-    brightness = WidgetsBinding.instance?.window.platformBrightness;
+    WidgetsBinding.instance.addObserver(this);
+    brightness = WidgetsBinding.instance.window.platformBrightness;
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangePlatformBrightness() {
     setState(() {
-      brightness = WidgetsBinding.instance?.window.platformBrightness;
+      brightness = WidgetsBinding.instance.window.platformBrightness;
     });
     super.didChangePlatformBrightness();
   }
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = Provider.of<ThemeProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       theme: themeProvider.current(brightness),
       title: 'Rick and Morty',
